@@ -4,8 +4,8 @@ Build armhf version of MK using Docker
 
 ### Usage
 
-To extract the debs, run
+The following command will drop you to the chroot environment:
 
 ```
-docker run kinsamanka/mk-docker-test | tar xvf - 
+docker run --rm -i -t kinsamanka/mk-docker-test
 ```

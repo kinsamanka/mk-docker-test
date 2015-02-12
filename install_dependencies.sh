@@ -6,13 +6,15 @@ apt-get install -y --no-install-recommends \
 	devscripts \
 	fakeroot \
 	equivs \
-	lsb-release
+	lsb-release \
+	less
 
 # install machinekit build depends
 apt-get install -y -t wheezy-backports cython
 
 apt-get install -y --no-install-recommends \
 	autoconf \
+	automake \
 	avahi-daemon \
 	build-essential \
 	bwidget \
