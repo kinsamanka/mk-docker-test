@@ -14,10 +14,6 @@ ENV LANG C
 # container OS
 RUN echo 'APT::Install-Recommends "0";\nAPT::Install-Suggests "0";' > \
             /etc/apt/apt.conf.d/01norecommend
-# proot OS
-RUN mkdir -p /opt/rootfs/etc/apt/apt.conf.d && \
-    echo 'APT::Install-Recommends "0";\nAPT::Install-Suggests "0";' > \
-            /opt/rootfs/etc/apt/apt.conf.d/01norecommend
 
 # install required dependencies
 RUN apt-get update && \
@@ -34,14 +30,8 @@ RUN apt-get -y install \
         qemu-user-static
 ADD proot-helper /bin/
 
-ENV SUITE jessie
-ENV ARCH  amd64
-#
-# [Leave surrounding comments to eliminate merge conflicts]
-#
-
 # build under ${ROOTFS}
 RUN mkdir -p /opt/rootfs && \
     debootstrap --foreign --no-check-gpg --include=ca-certificates \
         --arch=amd64 jessie /opt/rootfs http://httpredir.debian.org/debian
-RUN proot -b /dev/pts -r /opt/rootfs /debootstrap/debootstrap --second-stage --verbose
+RUN proot -r /opt/rootfs /debootstrap/debootstrap --second-stage --verbose
