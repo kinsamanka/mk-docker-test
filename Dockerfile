@@ -41,7 +41,7 @@ ENV ARCH  amd64
 #
 
 # build under ${ROOTFS}
-RUN mkdir -p ${ROOTFS} && \
+RUN mkdir -p /opt/rootfs && \
     debootstrap --foreign --no-check-gpg --include=ca-certificates \
         --arch=${ARCH} ${SUITE} ${ROOTFS} http://httpredir.debian.org/debian
-RUN proot -b /dev/pts -r ${ROOTFS} /debootstrap/debootstrap --second-stage --verbose
+RUN proot -b /dev/pts -r /opt/rootfs /debootstrap/debootstrap --second-stage --verbose
