@@ -15,9 +15,9 @@ ENV LANG C
 RUN echo 'APT::Install-Recommends "0";\nAPT::Install-Suggests "0";' > \
             /etc/apt/apt.conf.d/01norecommend
 # proot OS
-RUN mkdir -p ${ROOTFS}/etc/apt/apt.conf.d && \
+RUN mkdir -p /opt/rootfs/etc/apt/apt.conf.d && \
     echo 'APT::Install-Recommends "0";\nAPT::Install-Suggests "0";' > \
-            ${ROOTFS}/etc/apt/apt.conf.d/01norecommend
+            /opt/rootfs/etc/apt/apt.conf.d/01norecommend
 
 # install required dependencies
 RUN apt-get update && \
@@ -43,5 +43,5 @@ ENV ARCH  amd64
 # build under ${ROOTFS}
 RUN mkdir -p /opt/rootfs && \
     debootstrap --foreign --no-check-gpg --include=ca-certificates \
-        --arch=${ARCH} ${SUITE} ${ROOTFS} http://httpredir.debian.org/debian
+        --arch=amd64 jessie /opt/rootfs http://httpredir.debian.org/debian
 RUN proot -b /dev/pts -r /opt/rootfs /debootstrap/debootstrap --second-stage --verbose
