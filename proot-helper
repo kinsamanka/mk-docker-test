@@ -1,0 +1,12 @@
+#!/bin/bash
+
+test $ARCH = armhf \
+    && QEMU_CMD="-q qemu-arm-static" \
+    || QEMU_CMD=""
+
+PROOT="proot -b /dev/pts -r $ROOTFS $QEMU_CMD"
+
+# Disable dpkg triggers starting services
+export RUNLEVEL=1
+
+exec $PROOT "$@"
