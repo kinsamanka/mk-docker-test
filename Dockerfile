@@ -18,20 +18,10 @@ RUN echo 'APT::Install-Recommends "0";\nAPT::Install-Suggests "0";' > \
 # install required dependencies
 RUN apt-get update && \
     apt-get -y install \
-        debootstrap \
+        multistrap \
         proot 
 
-# patch debootstrap as /proc cannot be mounted under proot
-RUN sed -i 's/in_target mount -t proc/#in_target mount -t proc/g' \
-        /usr/share/debootstrap/functions
-
-# for qemu in proot
-RUN apt-get -y install \
-        qemu-user-static
-ADD proot-helper /bin/
-
-# build under ${ROOTFS}
-RUN mkdir -p /opt/rootfs && \
-    debootstrap --foreign --no-check-gpg --include=ca-certificates \
-        --arch=amd64 jessie /opt/rootfs http://httpredir.debian.org/debian
-RUN proot -r /opt/rootfs /debootstrap/debootstrap --second-stage --verbose
+ADD test.conf /tmp
+RUN multistrap -f /tmp/test.conf -a amd64 -d /rootfs --no-auth
+RUN proot -r /rootfs /var/lib/dpkg/info/dash.preinst install && \
+    proot -r /rootfs dpkg --configure -a
