@@ -23,5 +23,5 @@ RUN apt-get update && \
 
 ADD test.conf /tmp
 RUN multistrap -f /tmp/test.conf -a amd64 -d /rootfs --no-auth
-RUN proot -r /rootfs /var/lib/dpkg/info/dash.preinst install && \
-    proot -r /rootfs dpkg --configure -a
+RUN proot -r /rootfs /var/lib/dpkg/info/dash.preinst install
+RUN proot -r /rootfs dpkg --configure -a
