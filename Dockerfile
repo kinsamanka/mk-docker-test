@@ -21,6 +21,7 @@ RUN apt-get update && \
         multistrap \
         proot 
 
+RUN multistrap -h
 ADD test.conf /tmp
 ADD test /tmp
 RUN perl /tmp/test -f /tmp/test.conf -a amd64 -d /rootfs --no-auth
