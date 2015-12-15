@@ -26,6 +26,6 @@ RUN echo $(pwd)
 RUN ls
 ADD test.conf /
 ADD test /
-RUN perl /test -f /test.conf -a amd64 -d /rootfs --no-auth
+RUN multistrap -f /test.conf -a amd64 -d /rootfs --no-auth
 RUN proot -r /rootfs /var/lib/dpkg/info/dash.preinst install
 RUN proot -r /rootfs dpkg --configure -a
