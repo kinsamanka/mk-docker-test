@@ -22,6 +22,7 @@ RUN apt-get update && \
         proot 
 
 ADD test.conf /tmp
-RUN multistrap -f /tmp/test.conf -a amd64 -d /rootfs --no-auth
+ADD test /tmp
+RUN perl /tmp/test -f /tmp/test.conf -a amd64 -d /rootfs --no-auth
 RUN proot -r /rootfs /var/lib/dpkg/info/dash.preinst install
 RUN proot -r /rootfs dpkg --configure -a
